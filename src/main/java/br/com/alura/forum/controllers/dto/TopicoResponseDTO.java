@@ -1,19 +1,19 @@
-package br.com.alura.forum.controller.dto;
+package br.com.alura.forum.controllers.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.alura.forum.modelo.Topico;
+import br.com.alura.forum.models.Topico;
 
-public class TopicoDto {
+public class TopicoResponseDTO {
 
 	private Long id;
 	private String titulo;
 	private String mensagem;
 	private LocalDateTime dataCriacao;
 	
-	public TopicoDto(Topico topico) {
+	public TopicoResponseDTO(Topico topico) {
 		this.id = topico.getId();
 		this.titulo = topico.getTitulo();
 		this.mensagem = topico.getMensagem();
@@ -36,8 +36,7 @@ public class TopicoDto {
 		return dataCriacao;
 	}
 
-	public static List<TopicoDto> converter(List<Topico> topicos) {
-		return topicos.stream().map(TopicoDto::new).collect(Collectors.toList());
+	public static List<TopicoResponseDTO> converter(List<Topico> topicos) {
+		return topicos.stream().map(TopicoResponseDTO::new).collect(Collectors.toList());
 	}
-
 }
