@@ -1,6 +1,6 @@
-package br.com.alura.forum.modelo;
+package br.com.alura.forum.models;
 
-import br.com.alura.forum.modelo.enums.StatusTopico;
+import br.com.alura.forum.models.enums.StatusTopico;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
