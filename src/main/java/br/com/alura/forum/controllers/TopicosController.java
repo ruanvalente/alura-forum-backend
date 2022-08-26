@@ -9,6 +9,7 @@ import br.com.alura.forum.controllers.dto.responses.TopicoDetailResponseDTO;
 import br.com.alura.forum.controllers.dto.requests.TopicoRequestDTO;
 import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
+import br.com.alura.forum.services.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,14 +30,12 @@ public class TopicosController {
 	@Autowired
 	private CursoRepository cursoReposiory;
 
+	@Autowired
+	private TopicoService topicoService;
+
 	@GetMapping
 	public List<TopicoResponseDTO> topicList(@RequestParam(required = false) String cursoNome) {
-		if (Objects.isNull(cursoNome)) {
-			List<Topico> topicoList = topicoRepository.findAll();
-			return TopicoResponseDTO.converter(topicoList);
-		}
-		List<Topico> topico = topicoRepository.findByCursoNome(cursoNome);
-		return TopicoResponseDTO.converter(topico);
+		return topicoService.topicList(cursoNome);
 	}
 
 	@PostMapping
