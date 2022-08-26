@@ -30,7 +30,7 @@ public class TopicosController {
 	private CursoRepository cursoReposiory;
 
 	@GetMapping
-	public List<TopicoResponseDTO> topicoList(@RequestParam(required = false) String cursoNome) {
+	public List<TopicoResponseDTO> topicList(@RequestParam(required = false) String cursoNome) {
 		if (Objects.isNull(cursoNome)) {
 			List<Topico> topicoList = topicoRepository.findAll();
 			return TopicoResponseDTO.converter(topicoList);
@@ -41,7 +41,8 @@ public class TopicosController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<TopicoResponseDTO> cadastrarTopico(@Valid @RequestBody TopicoRequestDTO topicoRequest, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<TopicoResponseDTO> createTopic(@Valid @RequestBody TopicoRequestDTO topicoRequest,
+											   UriComponentsBuilder uriBuilder) {
 		Topico topico = topicoRequest.convert(cursoReposiory);
 		topicoRepository.save(topico);
 
@@ -56,7 +57,7 @@ public class TopicosController {
 
 	@GetMapping("/{id}")
 	@Transactional
-	public ResponseEntity<TopicoDetailResponseDTO> topicoDetail(@PathVariable("id") Long id) {
+	public ResponseEntity<TopicoDetailResponseDTO> topicDetail(@PathVariable("id") Long id) {
 		Topico topico = topicoRepository.findById(id).orElse(null);
 
 		if (Objects.nonNull(topico)) {
@@ -84,4 +85,15 @@ public class TopicosController {
 		return ResponseEntity.ok().body(new TopicoResponseDTO(topico));
 	}
 
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> topicDelete(@PathVariable("id") Long id) {
+
+		if (Objects.nonNull(id)) {
+			topicoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+
+		return  ResponseEntity.notFound().build();
+	}
 }
