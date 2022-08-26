@@ -25,12 +25,6 @@ import javax.validation.Valid;
 @RequestMapping("/topicos")
 public class TopicosController {
 	@Autowired
-	private TopicoRepository topicoRepository;
-
-	@Autowired
-	private CursoRepository cursoReposiory;
-
-	@Autowired
 	private TopicoService topicoService;
 
 	@GetMapping
@@ -65,7 +59,6 @@ public class TopicosController {
 	}
 
 	@PutMapping("/{id}")
-	@Transactional
 	public ResponseEntity<TopicoResponseDTO> topicUpdate(@PathVariable("id") Long id,
 														 @Valid
 														 @RequestBody
@@ -80,11 +73,10 @@ public class TopicosController {
 	}
 
 	@DeleteMapping("/{id}")
-	@Transactional
 	public ResponseEntity<?> topicDelete(@PathVariable("id") Long id) {
 
 		if (Objects.nonNull(id)) {
-			topicoRepository.deleteById(id);
+			topicoService.topicDelete(id);
 			return ResponseEntity.ok().build();
 		}
 

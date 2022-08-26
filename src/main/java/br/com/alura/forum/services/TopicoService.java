@@ -62,4 +62,12 @@ public class TopicoService {
         }
         return null;
     }
+
+    @Transactional
+    public void topicDelete(Long id) {
+
+        if (Objects.nonNull(id)) {
+            topicoRepository.deleteById(id);
+        }
+    }
 }
