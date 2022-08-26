@@ -57,10 +57,10 @@ public class TopicosController {
 	@GetMapping("/{id}")
 	@Transactional
 	public ResponseEntity<TopicoDetailResponseDTO> topicDetail(@PathVariable("id") Long id) {
-		Topico topico = topicoRepository.findById(id).orElse(null);
+		TopicoDetailResponseDTO topico = topicoService.topicDetail(id);
 
 		if (Objects.nonNull(topico)) {
-			return ResponseEntity.ok().body( new TopicoDetailResponseDTO(topico));
+			return ResponseEntity.ok().body(topico);
 		}
 
 		return ResponseEntity.notFound().build();
