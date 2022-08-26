@@ -39,7 +39,6 @@ public class TopicosController {
 	}
 
 	@PostMapping
-	@Transactional
 	public ResponseEntity<TopicoResponseDTO> createTopic(@Valid @RequestBody TopicoRequestDTO topicoRequest,
 											   UriComponentsBuilder uriBuilder) {
 
@@ -55,7 +54,6 @@ public class TopicosController {
 	}
 
 	@GetMapping("/{id}")
-	@Transactional
 	public ResponseEntity<TopicoDetailResponseDTO> topicDetail(@PathVariable("id") Long id) {
 		TopicoDetailResponseDTO topico = topicoService.topicDetail(id);
 
@@ -72,16 +70,13 @@ public class TopicosController {
 														 @Valid
 														 @RequestBody
 														 TopicoUpdateRequestDTO topicoUpdateRequest) {
-		Topico topico = topicoRepository.findById(id).orElse(null);
+		TopicoResponseDTO topico = topicoService.topicUpdate(id, topicoUpdateRequest);
 
 		if (Objects.isNull(topico)) {
 			return ResponseEntity.notFound().build();
 		}
 
-		topico.setTitulo(topicoUpdateRequest.getTitulo());
-		topico.setMensagem(topicoUpdateRequest.getMensagem());
-
-		return ResponseEntity.ok().body(new TopicoResponseDTO(topico));
+		return ResponseEntity.ok().body(topico);
 	}
 
 	@DeleteMapping("/{id}")
