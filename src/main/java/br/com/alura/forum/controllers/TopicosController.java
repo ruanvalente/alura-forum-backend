@@ -4,17 +4,18 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
-import br.com.alura.forum.controllers.dto.TopicoDetailResponseDTO;
-import br.com.alura.forum.controllers.dto.TopicoRequestDTO;
+import br.com.alura.forum.controllers.dto.requests.TopicoUpdateRequestDTO;
+import br.com.alura.forum.controllers.dto.responses.TopicoDetailResponseDTO;
+import br.com.alura.forum.controllers.dto.requests.TopicoRequestDTO;
 import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.alura.forum.controllers.dto.TopicoResponseDTO;
+import br.com.alura.forum.controllers.dto.responses.TopicoResponseDTO;
 import br.com.alura.forum.models.Topico;
-import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -39,6 +40,7 @@ public class TopicosController {
 	}
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<TopicoResponseDTO> cadastrarTopico(@Valid @RequestBody TopicoRequestDTO topicoRequest, UriComponentsBuilder uriBuilder) {
 		Topico topico = topicoRequest.convert(cursoReposiory);
 		topicoRepository.save(topico);
@@ -53,6 +55,7 @@ public class TopicosController {
 	}
 
 	@GetMapping("/{id}")
+	@Transactional
 	public ResponseEntity<TopicoDetailResponseDTO> topicoDetail(@PathVariable("id") Long id) {
 		Topico topico = topicoRepository.findById(id).orElse(null);
 
@@ -61,6 +64,24 @@ public class TopicosController {
 		}
 
 		return ResponseEntity.notFound().build();
+	}
+
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<TopicoResponseDTO> topicUpdate(@PathVariable("id") Long id,
+														 @Valid
+														 @RequestBody
+														 TopicoUpdateRequestDTO topicoUpdateRequest) {
+		Topico topico = topicoRepository.findById(id).orElse(null);
+
+		if (Objects.isNull(topico)) {
+			return ResponseEntity.notFound().build();
+		}
+
+		topico.setTitulo(topicoUpdateRequest.getTitulo());
+		topico.setMensagem(topicoUpdateRequest.getMensagem());
+
+		return ResponseEntity.ok().body(new TopicoResponseDTO(topico));
 	}
 
 }

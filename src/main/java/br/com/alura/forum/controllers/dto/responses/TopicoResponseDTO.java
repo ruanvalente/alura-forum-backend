@@ -1,4 +1,4 @@
-package br.com.alura.forum.controllers.dto;
+package br.com.alura.forum.controllers.dto.responses;
 
 import java.time.LocalDateTime;
 import java.util.List;
