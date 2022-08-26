@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
+import br.com.alura.forum.controllers.dto.TopicoDetailResponseDTO;
 import br.com.alura.forum.controllers.dto.TopicoRequestDTO;
 import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
@@ -49,6 +50,17 @@ public class TopicosController {
 		return ResponseEntity
 				.created(uri)
 				.body(new TopicoResponseDTO(topico));
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<TopicoDetailResponseDTO> topicoDetail(@PathVariable("id") Long id) {
+		Topico topico = topicoRepository.findById(id).orElse(null);
+
+		if (Objects.nonNull(topico)) {
+			return ResponseEntity.ok().body( new TopicoDetailResponseDTO(topico));
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 }
