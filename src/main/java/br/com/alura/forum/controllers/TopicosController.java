@@ -9,6 +9,7 @@ import br.com.alura.forum.controllers.dto.responses.TopicoDetailResponseDTO;
 import br.com.alura.forum.controllers.dto.requests.TopicoRequestDTO;
 import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
+import br.com.alura.forum.services.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,27 +25,18 @@ import javax.validation.Valid;
 @RequestMapping("/topicos")
 public class TopicosController {
 	@Autowired
-	private TopicoRepository topicoRepository;
-
-	@Autowired
-	private CursoRepository cursoReposiory;
+	private TopicoService topicoService;
 
 	@GetMapping
 	public List<TopicoResponseDTO> topicList(@RequestParam(required = false) String cursoNome) {
-		if (Objects.isNull(cursoNome)) {
-			List<Topico> topicoList = topicoRepository.findAll();
-			return TopicoResponseDTO.converter(topicoList);
-		}
-		List<Topico> topico = topicoRepository.findByCursoNome(cursoNome);
-		return TopicoResponseDTO.converter(topico);
+		return topicoService.topicList(cursoNome);
 	}
 
 	@PostMapping
-	@Transactional
 	public ResponseEntity<TopicoResponseDTO> createTopic(@Valid @RequestBody TopicoRequestDTO topicoRequest,
 											   UriComponentsBuilder uriBuilder) {
-		Topico topico = topicoRequest.convert(cursoReposiory);
-		topicoRepository.save(topico);
+
+		TopicoResponseDTO topico = topicoService.createTopic(topicoRequest);
 
 		URI uri = uriBuilder.path("/topicos/{id}")
 					.buildAndExpand(topico.getId())
@@ -52,45 +44,39 @@ public class TopicosController {
 
 		return ResponseEntity
 				.created(uri)
-				.body(new TopicoResponseDTO(topico));
+				.body((topico));
 	}
 
 	@GetMapping("/{id}")
-	@Transactional
 	public ResponseEntity<TopicoDetailResponseDTO> topicDetail(@PathVariable("id") Long id) {
-		Topico topico = topicoRepository.findById(id).orElse(null);
+		TopicoDetailResponseDTO topico = topicoService.topicDetail(id);
 
 		if (Objects.nonNull(topico)) {
-			return ResponseEntity.ok().body( new TopicoDetailResponseDTO(topico));
+			return ResponseEntity.ok().body(topico);
 		}
 
 		return ResponseEntity.notFound().build();
 	}
 
 	@PutMapping("/{id}")
-	@Transactional
 	public ResponseEntity<TopicoResponseDTO> topicUpdate(@PathVariable("id") Long id,
 														 @Valid
 														 @RequestBody
 														 TopicoUpdateRequestDTO topicoUpdateRequest) {
-		Topico topico = topicoRepository.findById(id).orElse(null);
+		TopicoResponseDTO topico = topicoService.topicUpdate(id, topicoUpdateRequest);
 
 		if (Objects.isNull(topico)) {
 			return ResponseEntity.notFound().build();
 		}
 
-		topico.setTitulo(topicoUpdateRequest.getTitulo());
-		topico.setMensagem(topicoUpdateRequest.getMensagem());
-
-		return ResponseEntity.ok().body(new TopicoResponseDTO(topico));
+		return ResponseEntity.ok().body(topico);
 	}
 
 	@DeleteMapping("/{id}")
-	@Transactional
 	public ResponseEntity<?> topicDelete(@PathVariable("id") Long id) {
 
 		if (Objects.nonNull(id)) {
-			topicoRepository.deleteById(id);
+			topicoService.topicDelete(id);
 			return ResponseEntity.ok().build();
 		}
 
