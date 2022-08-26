@@ -42,8 +42,8 @@ public class TopicosController {
 	@Transactional
 	public ResponseEntity<TopicoResponseDTO> createTopic(@Valid @RequestBody TopicoRequestDTO topicoRequest,
 											   UriComponentsBuilder uriBuilder) {
-		Topico topico = topicoRequest.convert(cursoReposiory);
-		topicoRepository.save(topico);
+
+		TopicoResponseDTO topico = topicoService.createTopic(topicoRequest);
 
 		URI uri = uriBuilder.path("/topicos/{id}")
 					.buildAndExpand(topico.getId())
@@ -51,7 +51,7 @@ public class TopicosController {
 
 		return ResponseEntity
 				.created(uri)
-				.body(new TopicoResponseDTO(topico));
+				.body((topico));
 	}
 
 	@GetMapping("/{id}")

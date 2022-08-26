@@ -1,5 +1,6 @@
 package br.com.alura.forum.services;
 
+import br.com.alura.forum.controllers.dto.requests.TopicoRequestDTO;
 import br.com.alura.forum.controllers.dto.responses.TopicoResponseDTO;
 import br.com.alura.forum.models.Topico;
 import br.com.alura.forum.repositories.CursoRepository;
@@ -26,5 +27,11 @@ public class TopicoService {
 
         List<Topico> topico = topicoRepository.findByCursoNome(cursoNome);
         return TopicoResponseDTO.converter(topico);
+    }
+
+    public TopicoResponseDTO createTopic(TopicoRequestDTO topicoRequest) {
+        Topico topico = topicoRequest.convert(cursoRepository);
+        topicoRepository.save(topico);
+        return new TopicoResponseDTO(topico);
     }
 }
