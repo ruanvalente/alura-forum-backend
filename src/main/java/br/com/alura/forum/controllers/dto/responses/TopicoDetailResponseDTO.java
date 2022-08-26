@@ -1,6 +1,5 @@
-package br.com.alura.forum.controllers.dto;
+package br.com.alura.forum.controllers.dto.responses;
 
-import br.com.alura.forum.models.Resposta;
 import br.com.alura.forum.models.Topico;
 import br.com.alura.forum.models.enums.StatusTopico;
 
