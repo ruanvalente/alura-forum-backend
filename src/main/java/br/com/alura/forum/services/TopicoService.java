@@ -8,8 +8,13 @@ import br.com.alura.forum.models.Topico;
 import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,14 +27,14 @@ public class TopicoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public List<TopicoResponseDTO> topicList(String cursoNome) {
+    public Page<TopicoResponseDTO> topicList(String cursoNome, Pageable pagination) {
 
         if (Objects.isNull(cursoNome)) {
-            List<Topico> topicoList = topicoRepository.findAll();
+            Page<Topico> topicoList = topicoRepository.findAll(pagination);
             return TopicoResponseDTO.converter(topicoList);
         }
 
-        List<Topico> topico = topicoRepository.findByCursoNome(cursoNome);
+        Page<Topico> topico = topicoRepository.findByCursoNome(cursoNome, pagination);
         return TopicoResponseDTO.converter(topico);
     }
 
