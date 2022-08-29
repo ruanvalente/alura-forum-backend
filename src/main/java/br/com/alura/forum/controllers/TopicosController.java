@@ -11,6 +11,10 @@ import br.com.alura.forum.repositories.CursoRepository;
 import br.com.alura.forum.repositories.TopicoRepository;
 import br.com.alura.forum.services.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +32,9 @@ public class TopicosController {
 	private TopicoService topicoService;
 
 	@GetMapping
-	public List<TopicoResponseDTO> topicList(@RequestParam(required = false) String cursoNome) {
-		return topicoService.topicList(cursoNome);
+	public Page<TopicoResponseDTO> topicList(@RequestParam(required = false) String cursoNome,
+											 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pagination) {
+		return topicoService.topicList(cursoNome, pagination);
 	}
 
 	@PostMapping

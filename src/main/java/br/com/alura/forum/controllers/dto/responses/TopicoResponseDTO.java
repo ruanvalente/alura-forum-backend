@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.alura.forum.models.Topico;
+import org.springframework.data.domain.Page;
 
 public class TopicoResponseDTO {
 
@@ -36,7 +37,7 @@ public class TopicoResponseDTO {
 		return dataCriacao;
 	}
 
-	public static List<TopicoResponseDTO> converter(List<Topico> topicos) {
-		return topicos.stream().map(TopicoResponseDTO::new).collect(Collectors.toList());
+	public static Page<TopicoResponseDTO> converter(Page<Topico> topicos) {
+		return topicos.map(TopicoResponseDTO::new);
 	}
 }
