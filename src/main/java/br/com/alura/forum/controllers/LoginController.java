@@ -24,20 +24,11 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @PostMapping
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
-        UsernamePasswordAuthenticationToken login = loginRequest.convert();
-
         try {
-            Authentication authentication = authenticationManager.authenticate(login);
-            String token = tokenService.generateToken(authentication);
-            return ResponseEntity.ok(new LoginResponseDTO(token, "Bearer"));
+           LoginResponseDTO loginResponse = loginService.loginAuth(loginRequest);
+           return ResponseEntity.ok(loginResponse);
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().build();
         }
