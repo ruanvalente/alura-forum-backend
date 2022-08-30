@@ -47,7 +47,7 @@ Agora para levantar o banco basta utilizar o docker-compose
 docker-compose up -d
 ```
 
-## Documentação com Swagger
+## Documentação com Swagger 📄
 
 > Toda a documentação da aplicação pode ser encontrada acessando o recurso: *http://localhost:8080/swagger-ui.html*
 
