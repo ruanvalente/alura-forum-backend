@@ -5,6 +5,7 @@ import br.com.alura.forum.controllers.dto.requests.TopicoUpdateRequestDTO;
 import br.com.alura.forum.controllers.dto.responses.TopicoDetailResponseDTO;
 import br.com.alura.forum.controllers.dto.responses.TopicoResponseDTO;
 import br.com.alura.forum.services.TopicoService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,12 +29,14 @@ public class TopicosController {
 
 	@GetMapping
 	@Cacheable(value = "topicList")
+	@ApiOperation(value = "Retorna uma lista com todos os tópicos.", produces = "application/json")
 	public Page<TopicoResponseDTO> topicList(@RequestParam(required = false) String cursoNome,
 											 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pagination) {
 		return topicoService.topicList(cursoNome, pagination);
 	}
 
 	@PostMapping
+	@ApiOperation(value = "Cria um novo tópico.", produces = "application/json")
 	@CacheEvict(value = "topicList", allEntries = true)
 	public ResponseEntity<TopicoResponseDTO> createTopic(@Valid @RequestBody TopicoRequestDTO topicoRequest,
 											   UriComponentsBuilder uriBuilder) {
@@ -50,6 +53,7 @@ public class TopicosController {
 	}
 
 	@GetMapping("/{id}")
+	@ApiOperation(value = "Retorna um tópico por id.", produces = "application/json")
 	public ResponseEntity<TopicoDetailResponseDTO> topicDetail(@PathVariable("id") Long id) {
 		TopicoDetailResponseDTO topico = topicoService.topicDetail(id);
 
@@ -61,6 +65,7 @@ public class TopicosController {
 	}
 
 	@PutMapping("/{id}")
+	@ApiOperation(value = "Atualiza um tópicos por id.", produces = "application/json")
 	@CacheEvict(value = "topicList", allEntries = true)
 	public ResponseEntity<TopicoResponseDTO> topicUpdate(@PathVariable("id") Long id,
 														 @Valid
@@ -76,6 +81,7 @@ public class TopicosController {
 	}
 
 	@DeleteMapping("/{id}")
+	@ApiOperation(value = "Remove um tópicos por id.", produces = "application/json")
 	@CacheEvict(value = "topicList", allEntries = true)
 	public ResponseEntity<?> topicDelete(@PathVariable("id") Long id) {
 

@@ -4,6 +4,7 @@ import br.com.alura.forum.controllers.dto.requests.LoginRequestDTO;
 import br.com.alura.forum.controllers.dto.responses.LoginResponseDTO;
 import br.com.alura.forum.services.LoginService;
 import br.com.alura.forum.services.TokenService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,7 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping
+    @ApiOperation(value = "Realiza o login e retorna o token de acesso para aplicação.", produces = "application/json")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
         try {
            LoginResponseDTO loginResponse = loginService.loginAuth(loginRequest);
