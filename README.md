@@ -49,8 +49,7 @@ docker-compose up -d
 
 ## Documentação com Swagger 📄
 
-> Toda a documentação da aplicação pode ser encontrada acessando o recurso: *http://localhost:8080/swagger-ui.html*
-
+> Toda a documentação da aplicação pode ser encontrada acessando o recurso: *http://localhost:8080/swagger-ui.html* **dentro do ambiente local** 🫡
 <img width="1440" alt="Captura de Tela 2022-08-30 às 15 31 41" src="https://user-images.githubusercontent.com/6674232/187516013-fdd6f8cb-e96c-44d7-8dec-c699e79e01b5.png">
 
 
